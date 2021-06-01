@@ -24,10 +24,7 @@
     "serve:dev": "NODE_ENV=development ts-node-dev src/app.ts",
     "serve:prod": "node dist/src/app.js",
     "serve:debug": "NODE_ENV=development ts-node-dev --inspect src/app.ts",
-    "prisma:migrate:save": "prisma migrate save --experimental",
-    "prisma:migrate:up": "prisma migrate up --experimental",
-    "prisma:generate": "prisma generate",
-    "db:update": "run-s prisma:migrate:up prisma:generate",
+    "db:update": "prisma migrate dev",
     "build": "run-s clean:dist typescript:compile",
     "typescript:compile": "tsc",
     "lint:project": "eslint --ext ts,js,json ./",
@@ -50,8 +47,9 @@
   },
   "dependencies": {
     "@apollo/federation": "^0.25.1",
+    "@prisma/client": "^2.23.0",
+    "apollo-server": "^2.25.0",
     "graphql": "^15.5.0",
-    "prisma": "^2.23.0",
     "uuid": "^8.3.2",
     "winston": "^3.3.3"
   },
@@ -60,6 +58,7 @@
     "@commitlint/config-conventional": "^12.1.4",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.6.1",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
     "commitizen": "^4.2.4",
@@ -74,6 +73,7 @@
     "lint-staged": "^11.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.3.0",
+    "prisma": "^2.23.0",
     "ts-jest": "^27.0.2",
     "ts-node-dev": "^1.1.6",
     "typescript": "^4.3.2"
