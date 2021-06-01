@@ -18,7 +18,7 @@ An application for managing accounts.
 #### Running application in a Docker container
 
 - Build a Docker container using the following command:
-  - `docker build -t translations-graphql-api .`
+  - `docker build -t accounts-graphql-api .`
 - Run the container using the following comand:
   - `docker run -d -p 8001:8000 -e NODE_ENV -e HOST -e PORT -e PLAYGROUND -e INTROSPECTION accounts-graphql-api`
 
