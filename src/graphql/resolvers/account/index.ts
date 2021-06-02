@@ -29,25 +29,29 @@ export const queries: AccountOperations[Operation.QUERY] = {
 };
 
 export const mutations: AccountOperations[Operation.MUTATION] = {
-  createAccount: async ({ info: { fieldName }, context: { requestId } }) => {
-    const options: RequestOptions = {
-      requestId,
-      fieldName
-    };
-
-    return AccountService.createAccount(options);
-  },
-  updateAccount: async ({
+  createAccount: async ({
     info: { fieldName },
     context: { requestId },
-    input: { id }
+    input: { data }
   }) => {
     const options: RequestOptions = {
       requestId,
       fieldName
     };
 
-    return AccountService.updateAccount(id, options);
+    return AccountService.createAccount(data, options);
+  },
+  updateAccount: async ({
+    info: { fieldName },
+    context: { requestId },
+    input: { id, data }
+  }) => {
+    const options: RequestOptions = {
+      requestId,
+      fieldName
+    };
+
+    return AccountService.updateAccount(id, data, options);
   },
   deleteAccount: async ({
     info: { fieldName },
