@@ -4,7 +4,12 @@ import prisma from '../../prisma';
 
 import { NotFoundError, PersistenceError } from '../../graphql/errors';
 
-import type { Account, RequestOptions } from '../../types';
+import type {
+  Account,
+  CreateAccountInput,
+  UpdateAccountInput,
+  RequestOptions
+} from '../../types';
 
 const tags: string[] = [...serviceTags, 'account'];
 
@@ -52,9 +57,12 @@ class AccountService {
     }
   }
 
-  public async createAccount(options?: RequestOptions): Promise<Account> {
+  public async createAccount(
+    data: CreateAccountInput,
+    options?: RequestOptions
+  ): Promise<Account> {
     try {
-      const account = await prisma.account.create({ data: {} });
+      const account = await prisma.account.create({ data });
 
       logger.info(`Successfully created account with ID: ${account.id}`, {
         tags: [...tags, 'success'],
@@ -69,10 +77,11 @@ class AccountService {
 
   public async updateAccount(
     id: string,
+    data: UpdateAccountInput,
     options?: RequestOptions
   ): Promise<Account> {
     try {
-      const account = await prisma.account.update({ where: { id }, data: {} });
+      const account = await prisma.account.update({ where: { id }, data });
 
       logger.info(`Successfully updated account with ID: ${account.id}`, {
         tags: [...tags, 'success'],
