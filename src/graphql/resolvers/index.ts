@@ -1,10 +1,12 @@
 import {
   queries as accountQueries,
-  mutations as accountMutations
+  mutations as accountMutations,
+  lookups as accountLookups
 } from './account';
 
-import { createRootResolver } from '../../utils/common';
+import { createRootResolver, createResolver } from '../../utils/common';
 
 export default {
-  ...createRootResolver({ ...accountQueries }, { ...accountMutations })
+  ...createRootResolver({ ...accountQueries }, { ...accountMutations }),
+  Account: createResolver({ ...accountLookups })
 };

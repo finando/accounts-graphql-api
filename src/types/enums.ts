@@ -8,3 +8,5 @@ export enum Operation {
   MUTATION = 'mutation',
   LOOKUP = 'lookup'
 }
+
+export { BudgetAccountType, TrackingAccountType } from '@prisma/client';

@@ -1,13 +1,35 @@
-import { Account as AccountDBO } from '@prisma/client';
+import type {
+  BudgetAccount as BudgetAccountDBO,
+  TrackingAccount as TrackingAccountDBO
+} from '@prisma/client';
 
-export interface Account extends AccountDBO {}
+import type { BudgetAccountType, TrackingAccountType } from './enums';
 
-export interface CreateAccountInput {
+export interface BudgetAccount extends BudgetAccountDBO {}
+
+export interface TrackingAccount extends TrackingAccountDBO {}
+
+export type Account = BudgetAccount | TrackingAccount;
+
+export interface CreateBudgetAccountInput {
+  type: BudgetAccountType;
   name?: string;
 }
 
-export interface UpdateAccountInput {
+export interface CreateTrackingAccountInput {
+  type: TrackingAccountType;
   name?: string;
 }
 
-export type { Account as AccountDBO } from '@prisma/client';
+export interface UpdateBudgetAccountInput {
+  name?: string;
+}
+
+export interface UpdateTrackingAccountInput {
+  name?: string;
+}
+
+export type {
+  BudgetAccount as BudgetAccountDBO,
+  TrackingAccount as TrackingAccountDBO
+} from '@prisma/client';

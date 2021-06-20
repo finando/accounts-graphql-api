@@ -12,14 +12,27 @@ export default gql`
   extend type Query {
     getAccount(id: ID!): Account
 
+    getBudgetAccount(id: ID!): BudgetAccount
+
+    getTrackingAccount(id: ID!): TrackingAccount
+
     listAccounts: [Account!]!
   }
 
   extend type Mutation {
-    createAccount(data: CreateAccountInput!): Account!
+    createBudgetAccount(data: CreateBudgetAccountInput!): BudgetAccount!
 
-    updateAccount(id: ID!, data: UpdateAccountInput!): Account
+    createTrackingAccount(data: CreateTrackingAccountInput!): TrackingAccount!
 
-    deleteAccount(id: ID!): Account
+    updateBudgetAccount(id: ID!, data: UpdateBudgetAccountInput!): BudgetAccount
+
+    updateTrackingAccount(
+      id: ID!
+      data: UpdateTrackingAccountInput!
+    ): TrackingAccount
+
+    deleteBudgetAccount(id: ID!): BudgetAccount
+
+    deleteTrackingAccount(id: ID!): TrackingAccount
   }
 `;

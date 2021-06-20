@@ -1,11 +1,21 @@
 import { gql } from 'apollo-server';
 
 export default gql`
-  input CreateAccountInput {
+  input CreateBudgetAccountInput {
+    type: BudgetAccountType!
     name: String
   }
 
-  input UpdateAccountInput {
+  input CreateTrackingAccountInput {
+    type: TrackingAccountType!
+    name: String
+  }
+
+  input UpdateBudgetAccountInput {
+    name: String
+  }
+
+  input UpdateTrackingAccountInput {
     name: String
   }
 `;

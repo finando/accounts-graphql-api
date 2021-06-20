@@ -22,4 +22,5 @@ export type Resolver<
 export type RequestOptions = Readonly<{
   requestId?: string;
   fieldName?: string;
+  userId?: string;
 }>;

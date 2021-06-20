@@ -6,8 +6,12 @@ import { NotFoundError, PersistenceError } from '../../graphql/errors';
 
 import type {
   Account,
-  CreateAccountInput,
-  UpdateAccountInput,
+  BudgetAccount,
+  TrackingAccount,
+  CreateBudgetAccountInput,
+  CreateTrackingAccountInput,
+  UpdateBudgetAccountInput,
+  UpdateTrackingAccountInput,
   RequestOptions
 } from '../../types';
 
@@ -16,40 +20,125 @@ const tags: string[] = [...serviceTags, 'account'];
 class AccountService {
   public async getAccount(
     id: string,
+    userId: string,
     options?: RequestOptions
   ): Promise<Account | null> {
     try {
-      const account = await prisma.account.findFirst({
-        where: { id }
-      });
+      const [budgetAccount, trackingAccount] = await Promise.all([
+        prisma.budgetAccount.findFirst({
+          where: { id, userId }
+        }),
+        prisma.trackingAccount.findFirst({
+          where: { id, userId }
+        })
+      ]);
 
-      if (!account) {
-        throw new NotFoundError(`Could not find account with ID: ${id}`);
+      if (!budgetAccount && !trackingAccount) {
+        throw new NotFoundError(
+          `Could not find account with ID: ${id} for user with ID: ${userId}`
+        );
       }
 
-      logger.info(`Found account with ID: ${id}`, {
+      logger.info(`Found account with ID: ${id} for user with ID: ${userId}`, {
         tags: [...tags, 'success'],
         ...options
       });
 
-      return account;
+      return budgetAccount ?? trackingAccount;
     } catch (error) {
       throw this.handleError(error, options);
     }
   }
 
-  public async listAccounts(options?: RequestOptions): Promise<Account[]> {
+  public async getBudgetAccount(
+    id: string,
+    userId: string,
+    options?: RequestOptions
+  ): Promise<BudgetAccount | null> {
     try {
-      const accounts = await prisma.account.findMany({
-        orderBy: {
-          createdAt: 'asc'
-        }
+      const budgetAccount = await prisma.budgetAccount.findFirst({
+        where: { id, userId }
       });
 
-      logger.info(`Found ${accounts.length} accounts`, {
-        tags: [...tags, 'success'],
-        ...options
+      if (!budgetAccount) {
+        throw new NotFoundError(
+          `Could not find budget account with ID: ${id} for user with ID: ${userId}`
+        );
+      }
+
+      logger.info(
+        `Found budget account with ID: ${id} for user with ID: ${userId}`,
+        {
+          tags: [...tags, 'success'],
+          ...options
+        }
+      );
+
+      return budgetAccount;
+    } catch (error) {
+      throw this.handleError(error, options);
+    }
+  }
+
+  public async getTrackingAccount(
+    id: string,
+    userId: string,
+    options?: RequestOptions
+  ): Promise<TrackingAccount | null> {
+    try {
+      const trackingAccount = await prisma.trackingAccount.findFirst({
+        where: { id, userId }
       });
+
+      if (!trackingAccount) {
+        throw new NotFoundError(
+          `Could not find tracking account with ID: ${id} for user with ID: ${userId}`
+        );
+      }
+
+      logger.info(
+        `Found tracking account with ID: ${id} for user with ID: ${userId}`,
+        {
+          tags: [...tags, 'success'],
+          ...options
+        }
+      );
+
+      return trackingAccount;
+    } catch (error) {
+      throw this.handleError(error, options);
+    }
+  }
+
+  public async listAccounts(
+    userId: string,
+    options?: RequestOptions
+  ): Promise<Account[]> {
+    try {
+      const accounts = (
+        await Promise.all([
+          prisma.budgetAccount.findMany({
+            where: { userId },
+            orderBy: {
+              createdAt: 'asc'
+            }
+          }),
+          prisma.trackingAccount.findMany({
+            where: { userId },
+            orderBy: {
+              createdAt: 'asc'
+            }
+          })
+        ])
+      ).flat();
+
+      logger.info(
+        `Found ${accounts.length} accounts for user with ID: ${userId}`,
+        {
+          tags: [...tags, 'success'],
+          ...options
+        }
+      );
 
       return accounts;
     } catch (error) {
@@ -57,17 +146,23 @@ class AccountService {
     }
   }
 
-  public async createAccount(
-    data: CreateAccountInput,
+  public async createBudgetAccount(
+    userId: string,
+    data: CreateBudgetAccountInput,
     options?: RequestOptions
-  ): Promise<Account> {
+  ): Promise<BudgetAccount> {
     try {
-      const account = await prisma.account.create({ data });
-
-      logger.info(`Successfully created account with ID: ${account.id}`, {
-        tags: [...tags, 'success'],
-        ...options
+      const account = await prisma.budgetAccount.create({
+        data: { ...data, userId }
       });
+
+      logger.info(
+        `Successfully created budget account with ID: ${account.id} for user with ID: ${userId}`,
+        {
+          tags: [...tags, 'success'],
+          ...options
+        }
+      );
 
       return account;
     } catch (error) {
@@ -75,18 +170,23 @@ class AccountService {
     }
   }
 
-  public async updateAccount(
-    id: string,
-    data: UpdateAccountInput,
+  public async createTrackingAccount(
+    userId: string,
+    data: CreateTrackingAccountInput,
     options?: RequestOptions
-  ): Promise<Account> {
+  ): Promise<TrackingAccount> {
     try {
-      const account = await prisma.account.update({ where: { id }, data });
-
-      logger.info(`Successfully updated account with ID: ${account.id}`, {
-        tags: [...tags, 'success'],
-        ...options
+      const account = await prisma.trackingAccount.create({
+        data: { ...data, userId }
       });
+
+      logger.info(
+        `Successfully created tracking account with ID: ${account.id} for user with ID: ${userId}`,
+        {
+          tags: [...tags, 'success'],
+          ...options
+        }
+      );
 
       return account;
     } catch (error) {
@@ -94,19 +194,133 @@ class AccountService {
     }
   }
 
-  public async deleteAccount(
+  public async updateBudgetAccount(
     id: string,
+    userId: string,
+    data: UpdateBudgetAccountInput,
     options?: RequestOptions
-  ): Promise<Account> {
+  ): Promise<BudgetAccount> {
     try {
-      const account = await prisma.account.delete({ where: { id } });
+      const account = await this.getBudgetAccount(id, userId, options);
 
-      logger.info(`Successfully deleted account with ID: ${account.id}`, {
-        tags: [...tags, 'success'],
-        ...options
+      if (!account || account?.userId !== userId) {
+        throw new NotFoundError(
+          `Could not find budget account with ID: ${id} for user with ID: ${userId}`
+        );
+      }
+
+      const updatedAccount = await prisma.budgetAccount.update({
+        where: { id },
+        data
       });
 
-      return account;
+      logger.info(
+        `Successfully updated budget account with ID: ${updatedAccount.id} for user with ID: ${userId}`,
+        {
+          tags: [...tags, 'success'],
+          ...options
+        }
+      );
+
+      return updatedAccount;
+    } catch (error) {
+      throw this.handleError(error, options);
+    }
+  }
+
+  public async updateTrackingAccount(
+    id: string,
+    userId: string,
+    data: UpdateTrackingAccountInput,
+    options?: RequestOptions
+  ): Promise<TrackingAccount> {
+    try {
+      const account = await this.getTrackingAccount(id, userId, options);
+
+      if (!account || account?.userId !== userId) {
+        throw new NotFoundError(
+          `Could not find tracking account with ID: ${id} for user with ID: ${userId}`
+        );
+      }
+
+      const updatedAccount = await prisma.trackingAccount.update({
+        where: { id },
+        data
+      });
+
+      logger.info(
+        `Successfully updated tracking account with ID: ${updatedAccount.id} for user with ID: ${userId}`,
+        {
+          tags: [...tags, 'success'],
+          ...options
+        }
+      );
+
+      return updatedAccount;
+    } catch (error) {
+      throw this.handleError(error, options);
+    }
+  }
+
+  public async deleteBudgetAccount(
+    id: string,
+    userId: string,
+    options?: RequestOptions
+  ): Promise<BudgetAccount> {
+    try {
+      const account = await this.getBudgetAccount(id, userId, options);
+
+      if (!account || account?.userId !== userId) {
+        throw new NotFoundError(
+          `Could not find budget account with ID: ${id} for user with ID: ${userId}`
+        );
+      }
+
+      const deletedAccount = await prisma.budgetAccount.delete({
+        where: { id }
+      });
+
+      logger.info(
+        `Successfully deleted budget account with ID: ${deletedAccount.id} for user with ID: ${userId}`,
+        {
+          tags: [...tags, 'success'],
+          ...options
+        }
+      );
+
+      return deletedAccount;
+    } catch (error) {
+      throw this.handleError(error, options);
+    }
+  }
+
+  public async deleteTrackingAccount(
+    id: string,
+    userId: string,
+    options?: RequestOptions
+  ): Promise<TrackingAccount> {
+    try {
+      const account = await this.getTrackingAccount(id, userId, options);
+
+      if (!account || account?.userId !== userId) {
+        throw new NotFoundError(
+          `Could not find tracking account with ID: ${id} for user with ID: ${userId}`
+        );
+      }
+
+      const deletedAccount = await prisma.trackingAccount.delete({
+        where: { id }
+      });
+
+      logger.info(
+        `Successfully deleted tracking account with ID: ${deletedAccount.id} for user with ID: ${userId}`,
+        {
+          tags: [...tags, 'success'],
+          ...options
+        }
+      );
+
+      return deletedAccount;
     } catch (error) {
       throw this.handleError(error, options);
     }

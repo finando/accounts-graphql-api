@@ -1,18 +1,40 @@
-import type { CreateAccountInput, UpdateAccountInput } from '.';
+import type {
+  CreateBudgetAccountInput,
+  CreateTrackingAccountInput,
+  UpdateBudgetAccountInput,
+  UpdateTrackingAccountInput
+} from '.';
 
 export interface GetAccountParams {
   id: string;
 }
 
-export interface ListAccountsParams {}
-
-export interface CreateAccountParams {
-  data: CreateAccountInput;
+export interface GetBudgetAccountParams {
+  id: string;
 }
 
-export interface UpdateAccountParams {
+export interface GetTrackingAccountParams {
   id: string;
-  data: UpdateAccountInput;
+}
+
+export interface ListAccountsParams {}
+
+export interface CreateBudgetAccountParams {
+  data: CreateBudgetAccountInput;
+}
+
+export interface CreateTrackingAccountParams {
+  data: CreateTrackingAccountInput;
+}
+
+export interface UpdateBudgetAccountParams {
+  id: string;
+  data: UpdateBudgetAccountInput;
+}
+
+export interface UpdateTrackingAccountParams {
+  id: string;
+  data: UpdateTrackingAccountInput;
 }
 
 export interface DeleteAccountParams {
