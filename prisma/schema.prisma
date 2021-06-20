@@ -29,7 +29,7 @@ model BudgetAccount {
   type      BudgetAccountType
   userId    String
   name      String?
-  balance   Float             @default(0.00)
+  balance   Int               @default(0)
   currency  Currency          @default(NOK)
   createdAt DateTime          @default(now())
   updatedAt DateTime          @default(now()) @updatedAt
@@ -40,7 +40,7 @@ model TrackingAccount {
   type      TrackingAccountType
   userId    String
   name      String?
-  balance   Float               @default(0.00)
+  balance   Int                 @default(0)
   currency  Currency            @default(NOK)
   createdAt DateTime            @default(now())
   updatedAt DateTime            @default(now()) @updatedAt
