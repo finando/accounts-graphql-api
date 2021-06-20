@@ -1,8 +1,7 @@
 import { ApolloServer } from 'apollo-server';
 
-import env from './env';
-
-import logger from './utils/logging';
+import env from '@app/env';
+import logger from '@app/utils/logging';
 
 import context from './graphql/context';
 import plugins from './graphql/plugins';

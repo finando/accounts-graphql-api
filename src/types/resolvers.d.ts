@@ -1,3 +1,5 @@
+import type { Operation as OperationType } from '@app/enums';
+
 import type {
   Resolver,
   GetAccountParams,
@@ -12,7 +14,6 @@ import type {
   BudgetAccount,
   TrackingAccount
 } from '.';
-import type { Operation as OperationType } from './enums';
 
 export interface AccountResolvers {
   [OperationType.QUERY]: {

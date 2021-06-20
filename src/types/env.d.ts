@@ -1,4 +1,4 @@
-import type { Environment } from './enums';
+import type { Environment } from '@app/enums';
 
 export interface EnvironmentVariables {
   NODE_ENV: Environment;

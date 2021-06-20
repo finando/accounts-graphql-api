@@ -1,8 +1,7 @@
+import env from '@app/env';
+import logger, { serverTags } from '@app/utils/logging';
+
 import server from './server';
-
-import env from './env';
-
-import logger, { serverTags } from './utils/logging';
 
 const { NODE_ENV: environment, HOST: host, PORT: port } = env;
 

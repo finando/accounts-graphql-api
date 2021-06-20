@@ -1,8 +1,7 @@
 import type { ApolloServerPlugin } from 'apollo-server-plugin-base';
 
-import logger, { requestTags } from '../../../utils/logging';
-
-import type { Context } from '../../../types';
+import logger, { requestTags } from '@app/utils/logging';
+import type { Context } from '@app/types';
 
 const plugin: ApolloServerPlugin<Context> = {
   requestDidStart: ({

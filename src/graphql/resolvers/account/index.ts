@@ -1,11 +1,6 @@
-import AccountService from '../../../services/account';
-
-import type { AccountResolvers, RequestOptions } from '../../../types';
-import {
-  Operation,
-  BudgetAccountType,
-  TrackingAccountType
-} from '../../../types/enums';
+import AccountService from '@app/services/account';
+import type { AccountResolvers, RequestOptions } from '@app/types';
+import { Operation, BudgetAccountType, TrackingAccountType } from '@app/enums';
 
 export const queries: AccountResolvers[Operation.QUERY] = {
   getAccount: async ({
