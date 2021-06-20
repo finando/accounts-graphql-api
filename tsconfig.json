@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "src",
     "target": "es6",
     "module": "commonjs",
     "lib": [
@@ -30,6 +31,26 @@
       "node_modules/@types",
       "src/types/*"
     ],
+    "paths": {
+      "@app/env": [
+        "env.ts"
+      ],
+      "@app/services/*": [
+        "services/*"
+      ],
+      "@app/prisma": [
+        "prisma"
+      ],
+      "@app/utils/*": [
+        "utils/*"
+      ],
+      "@app/types": [
+        "types/index.d.ts"
+      ],
+      "@app/enums": [
+        "types/enums.ts"
+      ],
+    },
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true
   },

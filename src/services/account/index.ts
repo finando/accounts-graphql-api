@@ -1,9 +1,5 @@
-import logger, { serviceTags } from '../../utils/logging';
-
-import prisma from '../../prisma';
-
-import { NotFoundError, PersistenceError } from '../../graphql/errors';
-
+import prisma from '@app/prisma';
+import logger, { serviceTags } from '@app/utils/logging';
 import type {
   Account,
   BudgetAccount,
@@ -13,7 +9,9 @@ import type {
   UpdateBudgetAccountInput,
   UpdateTrackingAccountInput,
   RequestOptions
-} from '../../types';
+} from '@app/types';
+
+import { NotFoundError, PersistenceError } from '../../graphql/errors';
 
 const tags: string[] = [...serviceTags, 'account'];
 

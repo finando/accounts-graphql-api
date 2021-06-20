@@ -1,8 +1,7 @@
+import { validateEnv } from '@app/utils/common';
+import { Environment } from '@app/enums';
+
 import { name } from '../package.json';
-
-import { validateEnv } from './utils/common';
-
-import { Environment } from './types/enums';
 
 const {
   NODE_ENV = Environment.DEVELOPMENT,

@@ -1,10 +1,8 @@
 import type { ApolloServerPlugin } from 'apollo-server-plugin-base';
 
-import env from '../../../env';
-
-import logger, { serverConfigTags } from '../../../utils/logging';
-
-import type { Context } from '../../../types';
+import env from '@app/env';
+import logger, { serverConfigTags } from '@app/utils/logging';
+import type { Context } from '@app/types';
 
 const {
   NODE_ENV: environment,

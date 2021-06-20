@@ -1,6 +1,6 @@
 import { createLogger, format, transports } from 'winston';
 
-import { Environment } from '../../types/enums';
+import { Environment } from '@app/enums';
 
 const { NODE_ENV: environment, npm_package_name: name } = process.env;
 
