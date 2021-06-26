@@ -6,9 +6,9 @@ export interface EnvironmentVariables {
   PORT: number;
   PLAYGROUND: boolean;
   INTROSPECTION: boolean;
-  POSTGRES_USERNAME: string;
-  POSTGRES_PASSWORD: string;
   POSTGRES_HOST: string;
   POSTGRES_PORT: number;
+  POSTGRES_USERNAME: string;
+  POSTGRES_PASSWORD: string;
   POSTGRES_DB: string;
 }

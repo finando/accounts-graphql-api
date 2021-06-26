@@ -31,15 +31,21 @@ export interface AccountResolvers {
       CreateTrackingAccountParams,
       TrackingAccount
     >;
-    updateBudgetAccount: Resolver<UpdateBudgetAccountParams, BudgetAccount>;
+    updateBudgetAccount: Resolver<
+      UpdateBudgetAccountParams,
+      BudgetAccount | null
+    >;
     updateTrackingAccount: Resolver<
       UpdateTrackingAccountParams,
-      TrackingAccount
+      TrackingAccount | null
     >;
-    deleteBudgetAccount: Resolver<DeleteBudgetAccountParams, BudgetAccount>;
+    deleteBudgetAccount: Resolver<
+      DeleteBudgetAccountParams,
+      BudgetAccount | null
+    >;
     deleteTrackingAccount: Resolver<
       DeleteTrackingAccountParams,
-      TrackingAccount
+      TrackingAccount | null
     >;
   };
   [OperationType.LOOKUP]: {
