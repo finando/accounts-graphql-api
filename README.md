@@ -20,7 +20,7 @@ An application for managing accounts.
 - Build a Docker container using the following command:
   - `docker build -t accounts-graphql-api .`
 - Run the container using the following comand:
-  - `docker run -d -p 8001:8000 -e NODE_ENV -e HOST -e PORT -e PLAYGROUND -e INTROSPECTION accounts-graphql-api`
+  - `docker run -d -p 8001:8000 -e NODE_ENV -e HOST -e PORT -e PLAYGROUND -e INTROSPECTION -e POSTGRES_HOST -e POSTGRES_PORT -e POSTGRES_USERNAME -e POSTGRES_PASSWORD -e POSTGRES_DB accounts-graphql-api`
 
 #### Running application using Docker Compose
 
@@ -37,7 +37,7 @@ An application for managing accounts.
   - `0.0.0.0` (default)
 
 `PORT` - application port (not necessary)
-  - `8005` (default)
+  - `8001` (default)
 
 `PLAYGROUND` - makes GraphQL Playground available at root URL
   - `true`
@@ -46,6 +46,16 @@ An application for managing accounts.
 `INTROSPECTION` - enables or disables introspection query
   - `true`
   - `false`
+
+`POSTGRES_HOST` - Postgres host
+
+`POSTGRES_PORT` - Postgres port
+
+`POSTGRES_USERNAME` - Postgres username
+
+`POSTGRES_PASSWORD` - Postgres password
+
+`POSTGRES_DB` - Postgres database name
 
 ## Contributing
 

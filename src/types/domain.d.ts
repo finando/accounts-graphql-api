@@ -1,9 +1,9 @@
 import type {
   BudgetAccount as BudgetAccountDBO,
-  TrackingAccount as TrackingAccountDBO
+  TrackingAccount as TrackingAccountDBO,
+  BudgetAccountType,
+  TrackingAccountType
 } from '@prisma/client';
-
-import type { BudgetAccountType, TrackingAccountType } from '@app/enums';
 
 export interface BudgetAccount extends BudgetAccountDBO {}
 
