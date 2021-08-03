@@ -4,12 +4,12 @@ import logger, { requestTags } from '@app/utils/logging';
 import type { Context } from '@app/types';
 
 const plugin: ApolloServerPlugin<Context> = {
-  requestDidStart: ({
+  requestDidStart: async ({
     queryHash,
     operationName: operation,
     context: { requestId }
   }) => ({
-    didEncounterErrors: ({ errors }) =>
+    didEncounterErrors: async ({ errors }) =>
       errors.forEach(error => {
         logger.error(error.message, {
           tags: [...requestTags, 'error'],

@@ -4,8 +4,6 @@ export interface EnvironmentVariables {
   NODE_ENV: Environment;
   HOST: string;
   PORT: number;
-  PLAYGROUND: boolean;
-  INTROSPECTION: boolean;
   POSTGRES_HOST: string;
   POSTGRES_PORT: number;
   POSTGRES_USERNAME: string;

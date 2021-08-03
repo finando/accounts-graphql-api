@@ -128,7 +128,9 @@ class AccountService {
             }
           })
         ])
-      ).flat();
+      )
+        .flat()
+        .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
 
       logger.info(
         `Found ${accounts.length} accounts for user with ID: ${userId}`,
