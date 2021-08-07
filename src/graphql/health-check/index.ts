@@ -1,3 +1,3 @@
-import prisma from '../../prisma';
+import prisma from '@app/prisma';
 
 export default async () => await prisma.$queryRaw`SELECT 1`;

@@ -1,7 +1,11 @@
 import type { GraphQLResolveInfo } from 'graphql';
 
+import AccountService from '@app/services/account';
+
 export interface Context {
   requestId: string;
+  userId: string;
+  accountService: AccountService;
 }
 
 interface Input<TRoot, TInput, TValue> {
@@ -18,9 +22,3 @@ export type Resolver<
   TRoot = Record<string, unknown>,
   TValue = Record<string, unknown>
 > = (input: Readonly<Input<TRoot, TParams, TValue>>) => Promise<TOutput>;
-
-export type RequestOptions = Readonly<{
-  requestId?: string;
-  fieldName?: string;
-  userId?: string;
-}>;
