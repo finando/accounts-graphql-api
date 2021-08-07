@@ -48,7 +48,7 @@ class AccountService extends Service {
         where: { id, userId }
       });
 
-      if (!budgetAccount) {
+      if (!budgetAccount || budgetAccount?.userId !== userId) {
         throw new NotFoundError(
           `Could not find budget account with ID: ${id} for user with ID: ${userId}`
         );
@@ -73,7 +73,7 @@ class AccountService extends Service {
         where: { id, userId }
       });
 
-      if (!trackingAccount) {
+      if (!trackingAccount || trackingAccount?.userId !== userId) {
         throw new NotFoundError(
           `Could not find tracking account with ID: ${id} for user with ID: ${userId}`
         );
@@ -162,16 +162,8 @@ class AccountService extends Service {
     id: string,
     userId: string,
     data: UpdateBudgetAccountInput
-  ): Promise<BudgetAccount> {
+  ): Promise<BudgetAccount | null> {
     try {
-      const account = await this.getBudgetAccount(id, userId);
-
-      if (!account || account?.userId !== userId) {
-        throw new NotFoundError(
-          `Could not find budget account with ID: ${id} for user with ID: ${userId}`
-        );
-      }
-
       const updatedAccount = await this.prisma.budgetAccount.update({
         where: { id },
         data
@@ -191,16 +183,8 @@ class AccountService extends Service {
     id: string,
     userId: string,
     data: UpdateTrackingAccountInput
-  ): Promise<TrackingAccount> {
+  ): Promise<TrackingAccount | null> {
     try {
-      const account = await this.getTrackingAccount(id, userId);
-
-      if (!account || account?.userId !== userId) {
-        throw new NotFoundError(
-          `Could not find tracking account with ID: ${id} for user with ID: ${userId}`
-        );
-      }
-
       const updatedAccount = await this.prisma.trackingAccount.update({
         where: { id },
         data
@@ -219,16 +203,8 @@ class AccountService extends Service {
   public async deleteBudgetAccount(
     id: string,
     userId: string
-  ): Promise<BudgetAccount> {
+  ): Promise<BudgetAccount | null> {
     try {
-      const account = await this.getBudgetAccount(id, userId);
-
-      if (!account || account?.userId !== userId) {
-        throw new NotFoundError(
-          `Could not find budget account with ID: ${id} for user with ID: ${userId}`
-        );
-      }
-
       const deletedAccount = await this.prisma.budgetAccount.delete({
         where: { id }
       });
@@ -246,16 +222,8 @@ class AccountService extends Service {
   public async deleteTrackingAccount(
     id: string,
     userId: string
-  ): Promise<TrackingAccount> {
+  ): Promise<TrackingAccount | null> {
     try {
-      const account = await this.getTrackingAccount(id, userId);
-
-      if (!account || account?.userId !== userId) {
-        throw new NotFoundError(
-          `Could not find tracking account with ID: ${id} for user with ID: ${userId}`
-        );
-      }
-
       const deletedAccount = await this.prisma.trackingAccount.delete({
         where: { id }
       });
