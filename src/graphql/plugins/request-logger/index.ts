@@ -5,7 +5,7 @@ import type { Context } from '@app/types';
 
 const plugin: ApolloServerPlugin<Context> = {
   requestDidStart: async ({ queryHash, context: { requestId } }) => {
-    logger.info('Request start', {
+    logger.debug('Request start', {
       tags: [...requestTags, 'start'],
       requestId,
       queryHash
@@ -15,7 +15,7 @@ const plugin: ApolloServerPlugin<Context> = {
       willSendResponse: async ({ response: { http }, errors }) => {
         http?.headers.set('request-id', requestId);
 
-        logger.info('Request end', {
+        logger.debug('Request end', {
           tags: [...requestTags, 'end'],
           requestId,
           queryHash,

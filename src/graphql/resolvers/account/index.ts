@@ -1,147 +1,46 @@
-import AccountService from '@app/services/account';
-import type { AccountResolvers, RequestOptions } from '@app/types';
+import type { AccountResolvers } from '@app/types';
 import { Operation, BudgetAccountType, TrackingAccountType } from '@app/enums';
 
 export const queries: AccountResolvers[Operation.QUERY] = {
-  getAccount: async ({
-    info: { fieldName },
-    context: { requestId },
-    input: { id }
-  }) => {
-    const userId = 'az';
-    const options: RequestOptions = {
-      requestId,
-      fieldName,
-      userId
-    };
-
-    return AccountService.getAccount(id, userId, options);
-  },
+  getAccount: async ({ context: { userId, accountService }, input: { id } }) =>
+    accountService.getAccount(id, userId),
   getBudgetAccount: async ({
-    info: { fieldName },
-    context: { requestId },
+    context: { userId, accountService },
     input: { id }
-  }) => {
-    const userId = 'az';
-    const options: RequestOptions = {
-      requestId,
-      fieldName,
-      userId
-    };
-
-    return AccountService.getBudgetAccount(id, userId, options);
-  },
+  }) => accountService.getBudgetAccount(id, userId),
   getTrackingAccount: async ({
-    info: { fieldName },
-    context: { requestId },
+    context: { userId, accountService },
     input: { id }
-  }) => {
-    const userId = 'az';
-    const options: RequestOptions = {
-      requestId,
-      fieldName,
-      userId
-    };
-
-    return AccountService.getTrackingAccount(id, userId, options);
-  },
-  listAccounts: async ({ info: { fieldName }, context: { requestId } }) => {
-    const userId = 'az';
-    const options: RequestOptions = {
-      requestId,
-      fieldName,
-      userId
-    };
-
-    return AccountService.listAccounts(userId, options);
-  }
+  }) => accountService.getTrackingAccount(id, userId),
+  listAccounts: async ({ context: { userId, accountService } }) =>
+    accountService.listAccounts(userId)
 };
 
 export const mutations: AccountResolvers[Operation.MUTATION] = {
   createBudgetAccount: async ({
-    info: { fieldName },
-    context: { requestId },
+    context: { userId, accountService },
     input: { data }
-  }) => {
-    const userId = 'az';
-    const options: RequestOptions = {
-      requestId,
-      fieldName,
-      userId
-    };
-
-    return AccountService.createBudgetAccount(userId, data, options);
-  },
+  }) => accountService.createBudgetAccount(userId, data),
   createTrackingAccount: async ({
-    info: { fieldName },
-    context: { requestId },
+    context: { userId, accountService },
     input: { data }
-  }) => {
-    const userId = 'az';
-    const options: RequestOptions = {
-      requestId,
-      fieldName,
-      userId
-    };
-
-    return AccountService.createTrackingAccount(userId, data, options);
-  },
+  }) => accountService.createTrackingAccount(userId, data),
   updateBudgetAccount: async ({
-    info: { fieldName },
-    context: { requestId },
+    context: { userId, accountService },
     input: { id, data }
-  }) => {
-    const userId = 'az';
-    const options: RequestOptions = {
-      requestId,
-      fieldName,
-      userId
-    };
-
-    return AccountService.updateBudgetAccount(id, userId, data, options);
-  },
+  }) => accountService.updateBudgetAccount(id, userId, data),
   updateTrackingAccount: async ({
-    info: { fieldName },
-    context: { requestId },
+    context: { userId, accountService },
     input: { id, data }
-  }) => {
-    const userId = 'az';
-    const options: RequestOptions = {
-      requestId,
-      fieldName,
-      userId
-    };
-
-    return AccountService.updateTrackingAccount(id, userId, data, options);
-  },
+  }) => accountService.updateTrackingAccount(id, userId, data),
   deleteBudgetAccount: async ({
-    info: { fieldName },
-    context: { requestId },
+    context: { userId, accountService },
     input: { id }
-  }) => {
-    const userId = 'az';
-    const options: RequestOptions = {
-      requestId,
-      fieldName,
-      userId
-    };
-
-    return AccountService.deleteBudgetAccount(id, userId, options);
-  },
+  }) => accountService.deleteBudgetAccount(id, userId),
   deleteTrackingAccount: async ({
-    info: { fieldName },
-    context: { requestId },
+    context: { userId, accountService },
     input: { id }
-  }) => {
-    const userId = 'az';
-    const options: RequestOptions = {
-      requestId,
-      fieldName,
-      userId
-    };
-
-    return AccountService.deleteTrackingAccount(id, userId, options);
-  }
+  }) => accountService.deleteTrackingAccount(id, userId)
 };
 
 export const lookups: AccountResolvers[Operation.LOOKUP] = {

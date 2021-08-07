@@ -1,5 +1,4 @@
-import prisma from '@app/prisma';
-import logger, { serviceTags } from '@app/utils/logging';
+import { Service } from '@app/utils/service';
 import type {
   Account,
   BudgetAccount,
@@ -7,26 +6,19 @@ import type {
   CreateBudgetAccountInput,
   CreateTrackingAccountInput,
   UpdateBudgetAccountInput,
-  UpdateTrackingAccountInput,
-  RequestOptions
+  UpdateTrackingAccountInput
 } from '@app/types';
 
-import { NotFoundError, PersistenceError } from '../../graphql/errors';
+import { NotFoundError } from '../../graphql/errors';
 
-const tags: string[] = [...serviceTags, 'account'];
-
-class AccountService {
-  public async getAccount(
-    id: string,
-    userId: string,
-    options?: RequestOptions
-  ): Promise<Account | null> {
+class AccountService extends Service {
+  public async getAccount(id: string, userId: string): Promise<Account | null> {
     try {
       const [budgetAccount, trackingAccount] = await Promise.all([
-        prisma.budgetAccount.findFirst({
+        this.prisma.budgetAccount.findFirst({
           where: { id, userId }
         }),
-        prisma.trackingAccount.findFirst({
+        this.prisma.trackingAccount.findFirst({
           where: { id, userId }
         })
       ]);
@@ -37,24 +29,22 @@ class AccountService {
         );
       }
 
-      logger.info(`Found account with ID: ${id} for user with ID: ${userId}`, {
-        tags: [...tags, 'success'],
-        ...options
-      });
+      this.logger.info(
+        `Found account with ID: ${id} for user with ID: ${userId}`
+      );
 
       return budgetAccount ?? trackingAccount;
     } catch (error) {
-      throw this.handleError(error, options);
+      throw this.handleError(error);
     }
   }
 
   public async getBudgetAccount(
     id: string,
-    userId: string,
-    options?: RequestOptions
+    userId: string
   ): Promise<BudgetAccount | null> {
     try {
-      const budgetAccount = await prisma.budgetAccount.findFirst({
+      const budgetAccount = await this.prisma.budgetAccount.findFirst({
         where: { id, userId }
       });
 
@@ -64,27 +54,22 @@ class AccountService {
         );
       }
 
-      logger.info(
-        `Found budget account with ID: ${id} for user with ID: ${userId}`,
-        {
-          tags: [...tags, 'success'],
-          ...options
-        }
+      this.logger.info(
+        `Found budget account with ID: ${id} for user with ID: ${userId}`
       );
 
       return budgetAccount;
     } catch (error) {
-      throw this.handleError(error, options);
+      throw this.handleError(error);
     }
   }
 
   public async getTrackingAccount(
     id: string,
-    userId: string,
-    options?: RequestOptions
+    userId: string
   ): Promise<TrackingAccount | null> {
     try {
-      const trackingAccount = await prisma.trackingAccount.findFirst({
+      const trackingAccount = await this.prisma.trackingAccount.findFirst({
         where: { id, userId }
       });
 
@@ -94,34 +79,27 @@ class AccountService {
         );
       }
 
-      logger.info(
-        `Found tracking account with ID: ${id} for user with ID: ${userId}`,
-        {
-          tags: [...tags, 'success'],
-          ...options
-        }
+      this.logger.info(
+        `Found tracking account with ID: ${id} for user with ID: ${userId}`
       );
 
       return trackingAccount;
     } catch (error) {
-      throw this.handleError(error, options);
+      throw this.handleError(error);
     }
   }
 
-  public async listAccounts(
-    userId: string,
-    options?: RequestOptions
-  ): Promise<Account[]> {
+  public async listAccounts(userId: string): Promise<Account[]> {
     try {
       const accounts = (
         await Promise.all([
-          prisma.budgetAccount.findMany({
+          this.prisma.budgetAccount.findMany({
             where: { userId },
             orderBy: {
               createdAt: 'asc'
             }
           }),
-          prisma.trackingAccount.findMany({
+          this.prisma.trackingAccount.findMany({
             where: { userId },
             orderBy: {
               createdAt: 'asc'
@@ -132,76 +110,61 @@ class AccountService {
         .flat()
         .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
 
-      logger.info(
-        `Found ${accounts.length} accounts for user with ID: ${userId}`,
-        {
-          tags: [...tags, 'success'],
-          ...options
-        }
+      this.logger.info(
+        `Found ${accounts.length} accounts for user with ID: ${userId}`
       );
 
       return accounts;
     } catch (error) {
-      throw this.handleError(error, options);
+      throw this.handleError(error);
     }
   }
 
   public async createBudgetAccount(
     userId: string,
-    data: CreateBudgetAccountInput,
-    options?: RequestOptions
+    data: CreateBudgetAccountInput
   ): Promise<BudgetAccount> {
     try {
-      const account = await prisma.budgetAccount.create({
+      const account = await this.prisma.budgetAccount.create({
         data: { ...data, userId }
       });
 
-      logger.info(
-        `Successfully created budget account with ID: ${account.id} for user with ID: ${userId}`,
-        {
-          tags: [...tags, 'success'],
-          ...options
-        }
+      this.logger.info(
+        `Successfully created budget account with ID: ${account.id} for user with ID: ${userId}`
       );
 
       return account;
     } catch (error) {
-      throw this.handleError(error, options);
+      throw this.handleError(error);
     }
   }
 
   public async createTrackingAccount(
     userId: string,
-    data: CreateTrackingAccountInput,
-    options?: RequestOptions
+    data: CreateTrackingAccountInput
   ): Promise<TrackingAccount> {
     try {
-      const account = await prisma.trackingAccount.create({
+      const account = await this.prisma.trackingAccount.create({
         data: { ...data, userId }
       });
 
-      logger.info(
-        `Successfully created tracking account with ID: ${account.id} for user with ID: ${userId}`,
-        {
-          tags: [...tags, 'success'],
-          ...options
-        }
+      this.logger.info(
+        `Successfully created tracking account with ID: ${account.id} for user with ID: ${userId}`
       );
 
       return account;
     } catch (error) {
-      throw this.handleError(error, options);
+      throw this.handleError(error);
     }
   }
 
   public async updateBudgetAccount(
     id: string,
     userId: string,
-    data: UpdateBudgetAccountInput,
-    options?: RequestOptions
+    data: UpdateBudgetAccountInput
   ): Promise<BudgetAccount> {
     try {
-      const account = await this.getBudgetAccount(id, userId, options);
+      const account = await this.getBudgetAccount(id, userId);
 
       if (!account || account?.userId !== userId) {
         throw new NotFoundError(
@@ -209,33 +172,28 @@ class AccountService {
         );
       }
 
-      const updatedAccount = await prisma.budgetAccount.update({
+      const updatedAccount = await this.prisma.budgetAccount.update({
         where: { id },
         data
       });
 
-      logger.info(
-        `Successfully updated budget account with ID: ${updatedAccount.id} for user with ID: ${userId}`,
-        {
-          tags: [...tags, 'success'],
-          ...options
-        }
+      this.logger.info(
+        `Successfully updated budget account with ID: ${updatedAccount.id} for user with ID: ${userId}`
       );
 
       return updatedAccount;
     } catch (error) {
-      throw this.handleError(error, options);
+      throw this.handleError(error);
     }
   }
 
   public async updateTrackingAccount(
     id: string,
     userId: string,
-    data: UpdateTrackingAccountInput,
-    options?: RequestOptions
+    data: UpdateTrackingAccountInput
   ): Promise<TrackingAccount> {
     try {
-      const account = await this.getTrackingAccount(id, userId, options);
+      const account = await this.getTrackingAccount(id, userId);
 
       if (!account || account?.userId !== userId) {
         throw new NotFoundError(
@@ -243,32 +201,27 @@ class AccountService {
         );
       }
 
-      const updatedAccount = await prisma.trackingAccount.update({
+      const updatedAccount = await this.prisma.trackingAccount.update({
         where: { id },
         data
       });
 
-      logger.info(
-        `Successfully updated tracking account with ID: ${updatedAccount.id} for user with ID: ${userId}`,
-        {
-          tags: [...tags, 'success'],
-          ...options
-        }
+      this.logger.info(
+        `Successfully updated tracking account with ID: ${updatedAccount.id} for user with ID: ${userId}`
       );
 
       return updatedAccount;
     } catch (error) {
-      throw this.handleError(error, options);
+      throw this.handleError(error);
     }
   }
 
   public async deleteBudgetAccount(
     id: string,
-    userId: string,
-    options?: RequestOptions
+    userId: string
   ): Promise<BudgetAccount> {
     try {
-      const account = await this.getBudgetAccount(id, userId, options);
+      const account = await this.getBudgetAccount(id, userId);
 
       if (!account || account?.userId !== userId) {
         throw new NotFoundError(
@@ -276,31 +229,26 @@ class AccountService {
         );
       }
 
-      const deletedAccount = await prisma.budgetAccount.delete({
+      const deletedAccount = await this.prisma.budgetAccount.delete({
         where: { id }
       });
 
-      logger.info(
-        `Successfully deleted budget account with ID: ${deletedAccount.id} for user with ID: ${userId}`,
-        {
-          tags: [...tags, 'success'],
-          ...options
-        }
+      this.logger.info(
+        `Successfully deleted budget account with ID: ${deletedAccount.id} for user with ID: ${userId}`
       );
 
       return deletedAccount;
     } catch (error) {
-      throw this.handleError(error, options);
+      throw this.handleError(error);
     }
   }
 
   public async deleteTrackingAccount(
     id: string,
-    userId: string,
-    options?: RequestOptions
+    userId: string
   ): Promise<TrackingAccount> {
     try {
-      const account = await this.getTrackingAccount(id, userId, options);
+      const account = await this.getTrackingAccount(id, userId);
 
       if (!account || account?.userId !== userId) {
         throw new NotFoundError(
@@ -308,39 +256,19 @@ class AccountService {
         );
       }
 
-      const deletedAccount = await prisma.trackingAccount.delete({
+      const deletedAccount = await this.prisma.trackingAccount.delete({
         where: { id }
       });
 
-      logger.info(
-        `Successfully deleted tracking account with ID: ${deletedAccount.id} for user with ID: ${userId}`,
-        {
-          tags: [...tags, 'success'],
-          ...options
-        }
+      this.logger.info(
+        `Successfully deleted tracking account with ID: ${deletedAccount.id} for user with ID: ${userId}`
       );
 
       return deletedAccount;
     } catch (error) {
-      throw this.handleError(error, options);
-    }
-  }
-
-  private handleError(error: Error, options?: RequestOptions): Error {
-    logger.error(error.message, {
-      tags: [...tags, 'error'],
-      ...options,
-      error
-    });
-
-    if (error instanceof NotFoundError) {
-      return error;
-    } else {
-      return new PersistenceError(
-        'An error occurred whilst working with Account model'
-      );
+      throw this.handleError(error);
     }
   }
 }
 
-export default new AccountService();
+export default AccountService;
