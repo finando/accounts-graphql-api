@@ -13,9 +13,11 @@ export default gql`
 
   input UpdateBudgetAccountInput {
     name: String
+    balance: Int
   }
 
   input UpdateTrackingAccountInput {
     name: String
+    balance: Int
   }
 `;
