@@ -5,7 +5,7 @@ export default gql`
     id: ID!
     type: BudgetAccountType!
     name: String
-    balance: Int!
+    initialBalance: Int!
     currency: Currency!
   }
 
@@ -13,7 +13,7 @@ export default gql`
     id: ID!
     type: TrackingAccountType!
     name: String
-    balance: Int!
+    initialBalance: Int!
     currency: Currency!
   }
 

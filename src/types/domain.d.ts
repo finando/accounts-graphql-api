@@ -23,10 +23,12 @@ export interface CreateTrackingAccountInput {
 
 export interface UpdateBudgetAccountInput {
   name?: string;
+  initialBalance?: number;
 }
 
 export interface UpdateTrackingAccountInput {
   name?: string;
+  initialBalance?: number;
 }
 
 export type {
