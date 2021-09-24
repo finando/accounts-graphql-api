@@ -4,11 +4,13 @@ export default gql`
   input CreateBudgetAccountInput {
     type: BudgetAccountType!
     name: String
+    initialBalance: Int
   }
 
   input CreateTrackingAccountInput {
     type: TrackingAccountType!
     name: String
+    initialBalance: Int
   }
 
   input UpdateBudgetAccountInput {

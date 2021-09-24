@@ -14,11 +14,13 @@ export type Account = BudgetAccount | TrackingAccount;
 export interface CreateBudgetAccountInput {
   type: BudgetAccountType;
   name?: string;
+  initialBalance?: number;
 }
 
 export interface CreateTrackingAccountInput {
   type: TrackingAccountType;
   name?: string;
+  initialBalance?: number;
 }
 
 export interface UpdateBudgetAccountInput {
