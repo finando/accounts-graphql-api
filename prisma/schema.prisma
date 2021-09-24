@@ -25,23 +25,23 @@ enum Currency {
 }
 
 model BudgetAccount {
-  id        String            @id @default(cuid())
-  type      BudgetAccountType
-  userId    String
-  name      String?
-  balance   Int               @default(0)
-  currency  Currency          @default(NOK)
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @default(now()) @updatedAt
+  id             String            @id @default(cuid())
+  type           BudgetAccountType
+  userId         String
+  name           String?
+  initialBalance Int               @default(0)
+  currency       Currency          @default(NOK)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @default(now()) @updatedAt
 }
 
 model TrackingAccount {
-  id        String              @id @default(cuid())
-  type      TrackingAccountType
-  userId    String
-  name      String?
-  balance   Int                 @default(0)
-  currency  Currency            @default(NOK)
-  createdAt DateTime            @default(now())
-  updatedAt DateTime            @default(now()) @updatedAt
+  id             String              @id @default(cuid())
+  type           TrackingAccountType
+  userId         String
+  name           String?
+  initialBalance Int                 @default(0)
+  currency       Currency            @default(NOK)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @default(now()) @updatedAt
 }
