@@ -1,4 +1,4 @@
-import type { Operation as OperationType } from '@app/enums';
+import type { Operation } from '@app/enums';
 
 import type {
   Resolver,
@@ -16,7 +16,7 @@ import type {
 } from '.';
 
 export interface AccountResolvers {
-  [OperationType.QUERY]: {
+  [Operation.QUERY]: {
     getAccount: Resolver<GetAccountParams, Account | null>;
     getBudgetAccount: Resolver<GetBudgetAccountParams, BudgetAccount | null>;
     getTrackingAccount: Resolver<
@@ -25,7 +25,7 @@ export interface AccountResolvers {
     >;
     listAccounts: Resolver<ListAccountsParams, Account[]>;
   };
-  [OperationType.MUTATION]: {
+  [Operation.MUTATION]: {
     createBudgetAccount: Resolver<CreateBudgetAccountParams, BudgetAccount>;
     createTrackingAccount: Resolver<
       CreateTrackingAccountParams,
@@ -48,7 +48,7 @@ export interface AccountResolvers {
       TrackingAccount | null
     >;
   };
-  [OperationType.LOOKUP]: {
+  [Operation.LOOKUP]: {
     __resolveType: Resolver<any, string | null, Account>;
   };
 }
