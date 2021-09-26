@@ -13,8 +13,4 @@ export default gql`
     ASSET
     LIABILITY
   }
-
-  enum Currency {
-    NOK
-  }
 `;

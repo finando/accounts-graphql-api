@@ -1,3 +1,5 @@
+import { resolvers as scalarResolvers } from 'graphql-scalars';
+
 import { createRootResolver, createResolver } from '@app/utils/common';
 
 import {
@@ -8,5 +10,6 @@ import {
 
 export default {
   ...createRootResolver({ ...accountQueries }, { ...accountMutations }),
-  Account: createResolver({ ...accountLookups })
+  Account: createResolver({ ...accountLookups }),
+  ...scalarResolvers
 };
