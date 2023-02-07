@@ -1,4 +1,4 @@
-import { buildSubgraphSchema } from '@apollo/federation';
+import { buildSubgraphSchema } from '@apollo/subgraph';
 
 import resolvers from '../resolvers';
 import typeDefs from '../type-defs';

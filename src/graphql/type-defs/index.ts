@@ -6,6 +6,12 @@ import types from './types';
 import inputs from './inputs';
 
 export default gql`
+  extend schema
+    @link(
+      url: "https://specs.apollo.dev/federation/v2.0"
+      import: ["@key", "@shareable"]
+    )
+
   ${scalars}
   ${enums}
   ${types}
