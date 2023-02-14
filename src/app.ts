@@ -5,7 +5,7 @@ import server from './server';
 
 const { NODE_ENV: environment, HOST: host, PORT: port } = env;
 
-server.listen({ host, port }).then(({ url }) => {
+server({ host, port }).then(({ url }) => {
   logger.info(`Application is running at ${url} in ${environment} mode`, {
     tags: [...serverTags, 'start']
   });

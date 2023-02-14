@@ -1,16 +1,16 @@
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer } from '@apollo/server';
+import { startStandaloneServer } from '@apollo/server/standalone';
 
 import logger from '@app/utils/logging';
+import { type Context } from '@app/types';
 
 import context from './graphql/context';
 import plugins from './graphql/plugins';
 import schema from './graphql/schema';
-import onHealthCheck from './graphql/health-check';
+import { ListenOptions } from 'net';
 
-export default new ApolloServer({
-  context,
-  plugins,
-  schema,
-  onHealthCheck,
-  logger
-});
+export default (listen: ListenOptions) =>
+  startStandaloneServer(
+    new ApolloServer<Context>({ schema, logger, plugins }),
+    { context, listen }
+  );
