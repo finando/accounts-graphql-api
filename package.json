@@ -1,5 +1,5 @@
 {
-  "name": "accounts-graphql-api",
+  "name": "@finando/accounts-graphql-api",
   "description": "An application for managing accounts.",
   "version": "0.1.0",
   "repository": {
