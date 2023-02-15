@@ -1,4 +1,6 @@
-module.exports = {
+import type { Config } from 'jest';
+
+const configuration: Config = {
   globals: {
     'ts-jest': {
       isolatedModules: true
@@ -8,3 +10,5 @@ module.exports = {
   testEnvironment: 'node',
   collectCoverageFrom: ['src/**/*.{ts,js}']
 };
+
+export default configuration;

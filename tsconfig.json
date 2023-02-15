@@ -11,17 +11,14 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "downlevelIteration": true,
-    "strict": false,
-    "noImplicitAny": false,
-    "strictNullChecks": true,
-    "noImplicitThis": true,
-    "alwaysStrict": false,
-    "strictPropertyInitialization": false,
+    "strict": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "moduleResolution": "node",
     "types": [
       "node",
@@ -49,13 +46,15 @@
       ],
       "@app/enums": [
         "types/enums.ts"
-      ],
-    },
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true
+      ]
+    }
   },
   "include": [
-    "src/**/*"
+    "src"
+  ],
+  "files": [
+    "jest.config.ts",
+    "commitlint.config.ts"
   ],
   "exclude": [
     "node_modules"
