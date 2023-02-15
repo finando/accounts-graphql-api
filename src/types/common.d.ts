@@ -1,6 +1,6 @@
-import type { GraphQLResolveInfo } from 'graphql';
+import { type GraphQLResolveInfo } from 'graphql';
 
-import AccountService from '@app/services/account';
+import type AccountService from '@app/services/account';
 
 export interface Context {
   requestId: string;

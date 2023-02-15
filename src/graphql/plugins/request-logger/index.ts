@@ -1,14 +1,14 @@
-import type { ApolloServerPlugin } from '@apollo/server';
+import { type ApolloServerPlugin } from '@apollo/server';
 
+import { type Context } from '@app/types';
 import logger, { requestTags } from '@app/utils/logging';
-import type { Context } from '@app/types';
 
 const plugin: ApolloServerPlugin<Context> = {
   requestDidStart: async ({ queryHash, contextValue: { requestId } }) => {
     logger.debug('Request start', {
       tags: [...requestTags, 'start'],
       requestId,
-      queryHash
+      queryHash,
     });
 
     return {
@@ -19,11 +19,11 @@ const plugin: ApolloServerPlugin<Context> = {
           tags: [...requestTags, 'end'],
           requestId,
           queryHash,
-          errors: !!errors
+          errors: !!errors,
         });
-      }
+      },
     };
-  }
+  },
 };
 
 export default plugin;

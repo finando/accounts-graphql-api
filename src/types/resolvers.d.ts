@@ -1,18 +1,18 @@
-import type { Operation } from '@app/enums';
+import { type Operation } from '@app/enums';
 
-import type {
-  Resolver,
-  GetAccountParams,
-  GetBudgetAccountParams,
-  GetTrackingAccountParams,
-  ListAccountsParams,
-  UpdateBudgetAccountParams,
-  UpdateTrackingAccountParams,
-  DeleteBudgetAccountParams,
-  DeleteTrackingAccountParams,
-  Account,
-  BudgetAccount,
-  TrackingAccount
+import {
+  type Resolver,
+  type GetAccountParams,
+  type GetBudgetAccountParams,
+  type GetTrackingAccountParams,
+  type ListAccountsParams,
+  type UpdateBudgetAccountParams,
+  type UpdateTrackingAccountParams,
+  type DeleteBudgetAccountParams,
+  type DeleteTrackingAccountParams,
+  type Account,
+  type BudgetAccount,
+  type TrackingAccount,
 } from '.';
 
 export interface AccountResolvers {
@@ -49,6 +49,8 @@ export interface AccountResolvers {
     >;
   };
   [Operation.LOOKUP]: {
-    __resolveType: Resolver<any, string | null, Account>;
+    __resolveType: Resolver<unknown, string | null, Account>;
   };
 }
+
+export type Resolvers = AccountResolvers;

@@ -2,7 +2,7 @@ import type {
   CreateBudgetAccountInput,
   CreateTrackingAccountInput,
   UpdateBudgetAccountInput,
-  UpdateTrackingAccountInput
+  UpdateTrackingAccountInput,
 } from '.';
 
 export interface GetAccountParams {

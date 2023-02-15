@@ -1,25 +1,25 @@
-import type { ApolloServerPlugin } from '@apollo/server';
+import { type ApolloServerPlugin } from '@apollo/server';
 
+import { type Context } from '@app/types';
 import logger, { requestTags } from '@app/utils/logging';
-import type { Context } from '@app/types';
 
 const plugin: ApolloServerPlugin<Context> = {
   requestDidStart: async ({
     queryHash,
     operationName: operation,
-    contextValue: { requestId }
+    contextValue: { requestId },
   }) => ({
     didEncounterErrors: async ({ errors }) =>
-      errors.forEach(error => {
+      errors.forEach((error) => {
         logger.error(error.message, {
           tags: [...requestTags, 'error'],
           requestId,
           operation,
           queryHash,
-          error
+          error,
         });
-      })
-  })
+      }),
+  }),
 };
 
 export default plugin;

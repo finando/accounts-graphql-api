@@ -2,7 +2,7 @@ import type {
   BudgetAccount as BudgetAccountDBO,
   TrackingAccount as TrackingAccountDBO,
   BudgetAccountType,
-  TrackingAccountType
+  TrackingAccountType,
 } from '@prisma/client';
 
 export interface BudgetAccount extends BudgetAccountDBO {}
@@ -35,5 +35,5 @@ export interface UpdateTrackingAccountInput {
 
 export type {
   BudgetAccount as BudgetAccountDBO,
-  TrackingAccount as TrackingAccountDBO
+  TrackingAccount as TrackingAccountDBO,
 } from '@prisma/client';

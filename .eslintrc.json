@@ -1,27 +1,35 @@
 {
+  "$schema": "https://json.schemastore.org/eslintrc",
+  "root": true,
   "env": {
     "node": true,
-    "es2020": true,
-    "jest": true
+    "es2022": true,
+    "jest/globals": true
   },
   "extends": [
     "eslint:recommended",
+    "airbnb-base",
     "prettier",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:import/typescript"
+    "plugin:import/typescript",
+    "plugin:jest/recommended"
   ],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 2020,
-    "sourceType": "module"
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": [
+      "./tsconfig.json"
+    ]
   },
   "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [
+        ".ts"
+      ]
+    },
     "import/resolver": {
       "typescript": {
         "alwaysTryTypes": true
@@ -32,49 +40,117 @@
     "@typescript-eslint",
     "prettier",
     "import",
-    "json"
+    "jest"
   ],
   "rules": {
     "prettier/prettier": [
       "error",
       {
         "semi": true,
-        "singleQuote": true,
-        "trailingComma": "none",
-        "arrowParens": "avoid"
+        "singleQuote": true
       }
     ],
-    "import/no-extraneous-dependencies": [
+    "import/order": [
       "error",
       {
-        "devDependencies": [
-          "./test/*"
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "object"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "@(app|src|project)/*",
+            "group": "parent",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": [
+          "@(app|src|project)/*"
+        ],
+        "distinctGroup": true,
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true,
+          "orderImportKind": "desc"
+        }
+      }
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "ts": "never"
+      }
+    ],
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
+    "no-restricted-exports": "off",
+    "no-fallthrough": "off",
+    "max-classes-per-file": "off",
+    "quote-props": [
+      "error",
+      "consistent-as-needed"
+    ],
+    "consistent-return": "warn",
+    "no-useless-constructor": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "destructuredArrayIgnorePattern": "^_"
+      }
+    ],
+    "no-empty-function": "off",
+    "@typescript-eslint/no-empty-function": [
+      "error",
+      {
+        "allow": [
+          "arrowFunctions"
         ]
       }
     ],
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": [
+      "error"
+    ],
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": "error",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-empty-interface": "off",
-    "@typescript-eslint/camelcase": "off",
-    "@typescript-eslint/no-inferrable-types": "off",
-    "@typescript-eslint/no-var-requires": "off",
-    "@typescript-eslint/member-delimiter-style": "off",
-    "no-restricted-globals": "off",
-    "no-param-reassign": "off",
-    "import/default": "off",
-    "require-atomic-updates": "off",
-    "class-methods-use-this": "off",
-    "import/prefer-default-export": "off",
-    "import/no-named-as-default-member": "off"
+    "@typescript-eslint/consistent-type-imports": [
+      "warn",
+      {
+        "prefer": "type-imports",
+        "fixStyle": "inline-type-imports"
+      }
+    ]
   },
   "overrides": [
     {
       "files": [
-        "**/*.ts?(x)"
+        "*.ts"
+      ],
+      "processor": "@graphql-eslint/graphql"
+    },
+    {
+      "files": [
+        "*.graphql"
+      ],
+      "parser": "@graphql-eslint/eslint-plugin",
+      "plugins": [
+        "@graphql-eslint"
       ],
       "rules": {
-        "no-unused-expressions": "off"
+        "@graphql-eslint/known-type-names": "error"
       }
     }
   ]

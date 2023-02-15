@@ -1,26 +1,26 @@
-import { Service } from '@app/utils/service';
-import type {
-  Account,
-  BudgetAccount,
-  TrackingAccount,
-  CreateBudgetAccountInput,
-  CreateTrackingAccountInput,
-  UpdateBudgetAccountInput,
-  UpdateTrackingAccountInput
+import {
+  type Account,
+  type BudgetAccount,
+  type TrackingAccount,
+  type CreateBudgetAccountInput,
+  type CreateTrackingAccountInput,
+  type UpdateBudgetAccountInput,
+  type UpdateTrackingAccountInput,
 } from '@app/types';
+import { Service } from '@app/utils/service';
 
-import { NotFoundError } from '../../graphql/errors';
+import { InternalServerError, NotFoundError } from '../../graphql/errors';
 
 class AccountService extends Service {
   public async getAccount(id: string, userId: string): Promise<Account | null> {
     try {
       const [budgetAccount, trackingAccount] = await Promise.all([
         this.prisma.budgetAccount.findFirst({
-          where: { id, userId }
+          where: { id, userId },
         }),
         this.prisma.trackingAccount.findFirst({
-          where: { id, userId }
-        })
+          where: { id, userId },
+        }),
       ]);
 
       if (!budgetAccount && !trackingAccount) {
@@ -35,7 +35,11 @@ class AccountService extends Service {
 
       return budgetAccount ?? trackingAccount;
     } catch (error) {
-      throw this.handleError(error);
+      throw this.handleError(
+        error instanceof Error
+          ? error
+          : new InternalServerError('An unexpected error occurred')
+      );
     }
   }
 
@@ -45,7 +49,7 @@ class AccountService extends Service {
   ): Promise<BudgetAccount | null> {
     try {
       const budgetAccount = await this.prisma.budgetAccount.findFirst({
-        where: { id, userId }
+        where: { id, userId },
       });
 
       if (!budgetAccount || budgetAccount?.userId !== userId) {
@@ -60,7 +64,11 @@ class AccountService extends Service {
 
       return budgetAccount;
     } catch (error) {
-      throw this.handleError(error);
+      throw this.handleError(
+        error instanceof Error
+          ? error
+          : new InternalServerError('An unexpected error occurred')
+      );
     }
   }
 
@@ -70,7 +78,7 @@ class AccountService extends Service {
   ): Promise<TrackingAccount | null> {
     try {
       const trackingAccount = await this.prisma.trackingAccount.findFirst({
-        where: { id, userId }
+        where: { id, userId },
       });
 
       if (!trackingAccount || trackingAccount?.userId !== userId) {
@@ -85,7 +93,11 @@ class AccountService extends Service {
 
       return trackingAccount;
     } catch (error) {
-      throw this.handleError(error);
+      throw this.handleError(
+        error instanceof Error
+          ? error
+          : new InternalServerError('An unexpected error occurred')
+      );
     }
   }
 
@@ -96,15 +108,15 @@ class AccountService extends Service {
           this.prisma.budgetAccount.findMany({
             where: { userId },
             orderBy: {
-              createdAt: 'asc'
-            }
+              createdAt: 'asc',
+            },
           }),
           this.prisma.trackingAccount.findMany({
             where: { userId },
             orderBy: {
-              createdAt: 'asc'
-            }
-          })
+              createdAt: 'asc',
+            },
+          }),
         ])
       )
         .flat()
@@ -116,7 +128,11 @@ class AccountService extends Service {
 
       return accounts;
     } catch (error) {
-      throw this.handleError(error);
+      throw this.handleError(
+        error instanceof Error
+          ? error
+          : new InternalServerError('An unexpected error occurred')
+      );
     }
   }
 
@@ -126,7 +142,7 @@ class AccountService extends Service {
   ): Promise<BudgetAccount> {
     try {
       const account = await this.prisma.budgetAccount.create({
-        data: { ...data, userId }
+        data: { ...data, userId },
       });
 
       this.logger.info(
@@ -135,7 +151,11 @@ class AccountService extends Service {
 
       return account;
     } catch (error) {
-      throw this.handleError(error);
+      throw this.handleError(
+        error instanceof Error
+          ? error
+          : new InternalServerError('An unexpected error occurred')
+      );
     }
   }
 
@@ -145,7 +165,7 @@ class AccountService extends Service {
   ): Promise<TrackingAccount> {
     try {
       const account = await this.prisma.trackingAccount.create({
-        data: { ...data, userId }
+        data: { ...data, userId },
       });
 
       this.logger.info(
@@ -154,7 +174,11 @@ class AccountService extends Service {
 
       return account;
     } catch (error) {
-      throw this.handleError(error);
+      throw this.handleError(
+        error instanceof Error
+          ? error
+          : new InternalServerError('An unexpected error occurred')
+      );
     }
   }
 
@@ -166,7 +190,7 @@ class AccountService extends Service {
     try {
       const updatedAccount = await this.prisma.budgetAccount.update({
         where: { id },
-        data
+        data,
       });
 
       this.logger.info(
@@ -175,7 +199,11 @@ class AccountService extends Service {
 
       return updatedAccount;
     } catch (error) {
-      throw this.handleError(error);
+      throw this.handleError(
+        error instanceof Error
+          ? error
+          : new InternalServerError('An unexpected error occurred')
+      );
     }
   }
 
@@ -187,7 +215,7 @@ class AccountService extends Service {
     try {
       const updatedAccount = await this.prisma.trackingAccount.update({
         where: { id },
-        data
+        data,
       });
 
       this.logger.info(
@@ -196,7 +224,11 @@ class AccountService extends Service {
 
       return updatedAccount;
     } catch (error) {
-      throw this.handleError(error);
+      throw this.handleError(
+        error instanceof Error
+          ? error
+          : new InternalServerError('An unexpected error occurred')
+      );
     }
   }
 
@@ -206,7 +238,7 @@ class AccountService extends Service {
   ): Promise<BudgetAccount | null> {
     try {
       const deletedAccount = await this.prisma.budgetAccount.delete({
-        where: { id }
+        where: { id },
       });
 
       this.logger.info(
@@ -215,7 +247,11 @@ class AccountService extends Service {
 
       return deletedAccount;
     } catch (error) {
-      throw this.handleError(error);
+      throw this.handleError(
+        error instanceof Error
+          ? error
+          : new InternalServerError('An unexpected error occurred')
+      );
     }
   }
 
@@ -225,7 +261,7 @@ class AccountService extends Service {
   ): Promise<TrackingAccount | null> {
     try {
       const deletedAccount = await this.prisma.trackingAccount.delete({
-        where: { id }
+        where: { id },
       });
 
       this.logger.info(
@@ -234,7 +270,11 @@ class AccountService extends Service {
 
       return deletedAccount;
     } catch (error) {
-      throw this.handleError(error);
+      throw this.handleError(
+        error instanceof Error
+          ? error
+          : new InternalServerError('An unexpected error occurred')
+      );
     }
   }
 }

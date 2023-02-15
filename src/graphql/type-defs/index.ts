@@ -1,9 +1,9 @@
 import { gql } from 'graphql-tag';
 
-import scalars from './scalars';
 import enums from './enums';
-import types from './types';
 import inputs from './inputs';
+import scalars from './scalars';
+import types from './types';
 
 export default gql`
   extend schema

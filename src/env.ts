@@ -1,5 +1,5 @@
-import { validateEnv } from '@app/utils/common';
 import { Environment } from '@app/enums';
+import { validateEnv } from '@app/utils/common';
 
 import { name } from '../package.json';
 
@@ -11,7 +11,7 @@ const {
   POSTGRES_PORT = 5432,
   POSTGRES_USERNAME = 'admin',
   POSTGRES_PASSWORD = 'secret',
-  POSTGRES_DB = 'finando.local'
+  POSTGRES_DB = 'finando.local',
 } = process.env;
 
 process.env.DATABASE_URL = `postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=${name}`;
@@ -27,5 +27,5 @@ export default validateEnv({
   POSTGRES_PORT: Number(POSTGRES_PORT),
   POSTGRES_USERNAME,
   POSTGRES_PASSWORD,
-  POSTGRES_DB
+  POSTGRES_DB,
 });

@@ -1,16 +1,40 @@
-import type { GraphQLFieldResolver, GraphQLTypeResolver } from 'graphql';
+import { type IncomingHttpHeaders } from 'http';
+
+import { type GraphQLFieldResolver, type GraphQLTypeResolver } from 'graphql';
+import { v4 as uuid } from 'uuid';
+
+import {
+  type Operation,
+  type Resolvers,
+  type Context,
+  type Resolver,
+} from '@app/types';
+
+const isFieldResolver = (
+  args: unknown[]
+): args is Parameters<
+  GraphQLFieldResolver<Readonly<Record<string, unknown>>, Readonly<Context>>
+> => args.length === 4;
+
+const isTypeResolver = (
+  args: unknown[]
+): args is Parameters<
+  GraphQLTypeResolver<Readonly<Record<string, unknown>>, Readonly<Context>>
+> => args.length === 4;
 
 const resolve =
   (
-    resolver: any
-  ): GraphQLFieldResolver<any, any, any> | GraphQLTypeResolver<any, any> =>
-  (...args: any[]) => {
-    if (args.length === 4) {
+    resolver: Resolver<unknown, unknown>
+  ):
+    | GraphQLFieldResolver<unknown, object>
+    | GraphQLTypeResolver<unknown, unknown> =>
+  (...args: unknown[]) => {
+    if (isFieldResolver(args)) {
       const [root, input, context, info] = args;
 
       return resolver.call(null, { root, input, value: {}, context, info });
     }
-    if (args.length === 3) {
+    if (isTypeResolver(args)) {
       const [value, context, info] = args;
 
       return resolver.call(null, { root: {}, input: {}, value, context, info });
@@ -21,21 +45,26 @@ const resolve =
     );
   };
 
-export const createResolver = (operations: Record<string, unknown>) =>
+export const createResolver = (
+  operations:
+    | Resolvers[Operation.QUERY]
+    | Resolvers[Operation.MUTATION]
+    | Resolvers[Operation.LOOKUP]
+) =>
   Object.entries(operations).reduce(
     (previous, [operation, resolver]) => ({
       ...previous,
-      [operation]: resolve(resolver)
+      [operation]: resolve(resolver),
     }),
     {}
   );
 
 export const createRootResolver = (
-  queries: Record<string, unknown>,
-  mutations: Record<string, unknown>
+  queries: Resolvers[Operation.QUERY],
+  mutations: Resolvers[Operation.MUTATION]
 ) => ({
   Query: createResolver(queries),
-  Mutation: createResolver(mutations)
+  Mutation: createResolver(mutations),
 });
 
 function assertIsDefined<T>(
@@ -52,3 +81,10 @@ export const validateEnv = <T extends object>(env: T): T => {
 
   return env;
 };
+
+export const getRequestId = ({
+  'request-id': requestIdHeader,
+}: IncomingHttpHeaders): string =>
+  (typeof requestIdHeader === 'string'
+    ? requestIdHeader
+    : requestIdHeader?.shift()) || uuid();

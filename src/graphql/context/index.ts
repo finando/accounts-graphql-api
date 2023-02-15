@@ -1,13 +1,15 @@
-import { v4 as uuid } from 'uuid';
+import { type StandaloneServerContextFunctionArgument } from '@apollo/server/dist/esm/standalone';
 
 import prisma from '@app/prisma';
-import logger, { serviceTags } from '@app/utils/logging';
-import { Context } from '@app/types';
-
 import AccountService from '@app/services/account';
+import { type Context } from '@app/types';
+import { getRequestId } from '@app/utils/common';
+import logger, { serviceTags } from '@app/utils/logging';
 
-export default async ({ req }): Promise<Context> => {
-  const requestId = req.headers['request-id'] || uuid();
+export default async ({
+  req: { headers },
+}: StandaloneServerContextFunctionArgument): Promise<Context> => {
+  const requestId = getRequestId(headers);
   const userId = 'az';
 
   return {
@@ -16,6 +18,6 @@ export default async ({ req }): Promise<Context> => {
     accountService: new AccountService(
       prisma,
       logger.child({ tags: [...serviceTags, 'account'], requestId, userId })
-    )
+    ),
   };
 };
