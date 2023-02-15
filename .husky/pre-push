@@ -1,4 +1,6 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-npm audit --production --audit-level=moderate
+[ -n "$CI" ] && exit 0
+
+npm audit --omit=dev --audit-level=moderate
