@@ -1,4 +1,4 @@
-export * from './env';
+export * from './environment';
 export * from './common';
 export * from './enums';
 export * from './domain';
