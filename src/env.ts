@@ -6,9 +6,9 @@ import { name } from '../package.json';
 const {
   NODE_ENV = Environment.DEVELOPMENT,
   HOST = '0.0.0.0',
-  PORT = 8001,
+  PORT = '8001',
   POSTGRES_HOST = 'localhost',
-  POSTGRES_PORT = 5432,
+  POSTGRES_PORT = '5432',
   POSTGRES_USERNAME = 'admin',
   POSTGRES_PASSWORD = 'secret',
   POSTGRES_DB = 'finando.local',
@@ -22,9 +22,9 @@ export default validateEnv({
       ? Environment.DEVELOPMENT
       : Environment.PRODUCTION,
   HOST,
-  PORT: Number(PORT),
+  PORT,
   POSTGRES_HOST,
-  POSTGRES_PORT: Number(POSTGRES_PORT),
+  POSTGRES_PORT,
   POSTGRES_USERNAME,
   POSTGRES_PASSWORD,
   POSTGRES_DB,

@@ -3,9 +3,9 @@ import { type Environment } from '@app/enums';
 export interface EnvironmentVariables {
   NODE_ENV: Environment;
   HOST: string;
-  PORT: number;
+  PORT: string;
   POSTGRES_HOST: string;
-  POSTGRES_PORT: number;
+  POSTGRES_PORT: string;
   POSTGRES_USERNAME: string;
   POSTGRES_PASSWORD: string;
   POSTGRES_DB: string;
