@@ -10,3 +10,9 @@ export interface EnvironmentVariables {
   POSTGRES_PASSWORD: string;
   POSTGRES_DB: string;
 }
+
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv extends EnvironmentVariables {}
+  }
+}
