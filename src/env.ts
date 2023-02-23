@@ -1,7 +1,7 @@
 import { env } from 'process';
 
 import { Environment } from '@app/enums';
-import { validateEnv } from '@app/utils/common';
+import { validate } from '@app/utils/environment';
 
 import { name } from '../package.json';
 
@@ -17,11 +17,8 @@ const {
   DATABASE_URL = `postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=${name}`,
 } = env;
 
-export default validateEnv({
-  NODE_ENV:
-    NODE_ENV === Environment.DEVELOPMENT
-      ? Environment.DEVELOPMENT
-      : Environment.PRODUCTION,
+validate({
+  NODE_ENV,
   HOST,
   PORT,
   POSTGRES_HOST,
