@@ -12,9 +12,8 @@ const {
   POSTGRES_USERNAME = 'admin',
   POSTGRES_PASSWORD = 'secret',
   POSTGRES_DB = 'finando.local',
+  DATABASE_URL = `postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=${name}`,
 } = process.env;
-
-process.env.DATABASE_URL = `postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=${name}`;
 
 export default validateEnv({
   NODE_ENV:
@@ -28,4 +27,5 @@ export default validateEnv({
   POSTGRES_USERNAME,
   POSTGRES_PASSWORD,
   POSTGRES_DB,
+  DATABASE_URL,
 });

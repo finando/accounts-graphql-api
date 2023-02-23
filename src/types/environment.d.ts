@@ -9,6 +9,7 @@ export interface EnvironmentVariables {
   POSTGRES_USERNAME: string;
   POSTGRES_PASSWORD: string;
   POSTGRES_DB: string;
+  DATABASE_URL: string;
 }
 
 declare global {
