@@ -67,6 +67,9 @@ export const createRootResolver = (
   Mutation: createResolver(mutations),
 });
 
+export const isDefined = <T>(value: T): value is NonNullable<T> =>
+  value !== null && value !== undefined;
+
 function assertIsDefined<T>(
   key: string,
   value: T
