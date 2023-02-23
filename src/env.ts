@@ -1,3 +1,5 @@
+import { env } from 'process';
+
 import { Environment } from '@app/enums';
 import { validateEnv } from '@app/utils/common';
 
@@ -13,7 +15,7 @@ const {
   POSTGRES_PASSWORD = 'secret',
   POSTGRES_DB = 'finando.local',
   DATABASE_URL = `postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=${name}`,
-} = process.env;
+} = env;
 
 export default validateEnv({
   NODE_ENV:
@@ -29,3 +31,15 @@ export default validateEnv({
   POSTGRES_DB,
   DATABASE_URL,
 });
+
+export {
+  NODE_ENV,
+  HOST,
+  PORT,
+  POSTGRES_HOST,
+  POSTGRES_PORT,
+  POSTGRES_USERNAME,
+  POSTGRES_PASSWORD,
+  POSTGRES_DB,
+  DATABASE_URL,
+};
